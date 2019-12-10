@@ -1,5 +1,5 @@
 // lib imports
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 // shared imports
@@ -11,30 +11,37 @@ const Box = styled.div`
   flex-direction: column;
   display: flex;
 `;
-const Container = styled(Box)`
-  height: 100vh;
-`;
 const OverflowAutoBox = styled(Box)`
   overflow-y: auto;
   flex-grow: 1;
 `;
 const Row = styled.div`
-  flex-grow: 1;
+  height: ${props =>
+    props.navHeight
+      ? document.documentElement.clientHeight - props.navHeight + "px"
+      : "90vh"}
   display: flex;
 `;
+function calculateNavHeight(ref, setNavHeight) {
+  const navHt = ref.current.clientHeight;
+  setNavHeight(navHt);
+}
 
 const DashboardLayout = ({ component: Component }) => {
+  const [navHeight, setNavHeight] = useState();
+  const navRef = useRef();
+  useEffect(() => calculateNavHeight(navRef, setNavHeight), [navRef]);
   return (
-    <Container>
-      <Navbar />
-      <Row>
+    <Box>
+      <Navbar ref={navRef} />
+      <Row navHeight={navHeight}>
         <Sidebar />
         <OverflowAutoBox>
           <Component />
           <Footer />
         </OverflowAutoBox>
       </Row>
-    </Container>
+    </Box>
   );
 };
 

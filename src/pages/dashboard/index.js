@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 const Box = styled.div`
-  flex-direction: column;
   display: flex;
-  flex-grow: 2;
+  flex-direction: column;
   background: gray;
-  height: 1000px;
+  height: 2000px;
+  flex-shrink: 0;
 `;
 
 const DashboardPage = () => {
